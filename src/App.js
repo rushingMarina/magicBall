@@ -41,18 +41,41 @@ class App extends Component {
     }
   }
 
+
   calculateFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputimage');
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height)
-    }
+    console.log(data.outputs[0].data.regions);
+    let array = data.outputs[0].data.regions.map(region => {
+      const clarifaiFace = region.region_info.bounding_box;
+      console.log(`here is every region`,clarifaiFace);
+      const image = document.getElementById('inputimage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return ({
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - (clarifaiFace.right_col * width),
+          bottomRow: height - (clarifaiFace.bottom_row * height)
+      })
+    })
+    return array;
   }
+
+
+
+
+  //   calculateFaceLocation = (data) => {
+  //   console.log(data.outputs[0].data.regions);
+  //   const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+  //   const image = document.getElementById('inputimage');
+  //   const width = Number(image.width);
+  //   const height = Number(image.height);
+  //   return {
+  //     leftCol: clarifaiFace.left_col * width,
+  //     topRow: clarifaiFace.top_row * height,
+  //     rightCol: width - (clarifaiFace.right_col * width),
+  //     bottomRow: height - (clarifaiFace.bottom_row * height)
+  //   }
+  // }
 
   displayFaceBox = (box) => {
     this.setState({box: box});
