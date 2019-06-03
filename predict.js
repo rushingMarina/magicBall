@@ -1,4 +1,5 @@
 const predict = [
+
  'Your reality check about to bounce.',
  'You will soon have an out of money experience. ',
  'Two can live as cheaply as one, for half as long.',
@@ -13,12 +14,12 @@ const predict = [
  'It could be better, but it\'s good enough',
  'An alien of some sort will be appearing to you shortly.',
  'It is a good day to have a good day.',
-
-
-
-
+ 'You will meet someone famous.',
+ 'You have a secret admirer.'
 
 ]
+
+
 console.log(predict.length)
  
 
