@@ -1,3 +1,12 @@
+This project has 2 parts. 
+
+This repositiry is the front end. I deployed it on Heroku.  
+
+The server is called magicBall-API https://github.com/rushingMarina/magicBall-API . The server is deployed on Heroku as well and it has postgreSQL database that is connected to it using KNEX.js 
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
