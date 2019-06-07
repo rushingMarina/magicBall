@@ -7,6 +7,7 @@ import Signin from './components/Signin/Signin.js';
 import Register from './components/Register/Register.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import Rank from './components/Rank/Rank.js';
+import Predictions from './Predictions.js'
 
 import './App.css';
 
@@ -28,10 +29,11 @@ const particlesOptions = {
 
 const initialState = {
       input: '',
+      predict: ['Welcome to the MagicBall app! Here you can upload an image-URL and get predictions for anyone whose face is on the picture. Make sure that you can see a person\'s face on the picture that you want to submit. Even though MagicBall is extremely powerful it will only give predictions for the first 5 faces on the picture that it likes. After you find a picture on the internet that you like you should right click on it and pick an option “Open Image in New Tab”. Copy the image link from the browser and past it below. Good luck :)'],
       imageURL: '',
       box: {},
-      // route: 'signin',
       route: 'signin',
+      // route: 'home',
       isSignedIn: false,
       user: {
         id: '',
@@ -61,15 +63,13 @@ class App extends Component {
 
 
   calculateFaceLocation = (data) => {
-    console.log(data.outputs[0].data.regions);
+    // console.log(data.outputs[0].data.regions);
     let array = data.outputs[0].data.regions.map(region => {
       const clarifaiFace = region.region_info.bounding_box;
-      console.log(`here is every region`,clarifaiFace);
+      // console.log(`here is every region`,clarifaiFace);
       const image = document.getElementById('inputimage');
       const width = Number(image.width);
       const height = Number(image.height);
-      console.log("width", image.width);
-      console.log("height", image.height);
       return ({
           leftCol: clarifaiFace.left_col * width,
           topRow: clarifaiFace.top_row * height,
@@ -105,9 +105,44 @@ class App extends Component {
     this.setState({input: event.target.value});
   }
 
+  generatePredictions = (data) => {
+
+    const getRandomInt = (max) => {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    console.log(data.outputs[0].data.regions.length);
+    console.log("predictions",Predictions);
+    console.log("predictions length",Predictions.length);
+    let numOfFaces = data.outputs[0].data.regions.length;
+    let numOfPredict = Predictions.length;
+
+    if (numOfFaces>5) 
+      numOfFaces=5;
+    
+
+    let currentPredicts = [];
+    for (let i = 0; i<numOfFaces; i++) {
+      currentPredicts[i] = Predictions[getRandomInt(numOfPredict)];
+    }
+    console.log('currentPredicts', currentPredicts);
+
+    let stringP = '';
+
+    for (let i = 0; i<currentPredicts.length; i++) {
+      stringP += ( (i+1) + ') ' +  currentPredicts[i]+' \n')
+    }
+
+    this.setState({predict: stringP});
+
+    console.log(stringP);
+
+
+  }
+
   onButtonSubmit = () => {
     this.setState({imageURL: this.state.input});
-    fetch('http://localhost:3000/imageurl', {
+      fetch('https://aqueous-wave-42318.herokuapp.com/imageurl', {
             method: 'post',
             headers: {
               'Content-Type': 'application/json'
@@ -119,7 +154,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://aqueous-wave-42318.herokuapp.com/image', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json'
@@ -135,7 +170,8 @@ class App extends Component {
             .catch(console.log)
 
         }
-        this.displayFaceBox(this.calculateFaceLocation(response))
+        this.displayFaceBox(this.calculateFaceLocation(response));
+        this.generatePredictions(response);
       })
       .catch(err => console.log(err));
   }
@@ -161,7 +197,7 @@ class App extends Component {
         { this.state.route === 'home' 
             ?<div> 
               <div>
-                <Logo />
+                <Logo predict={this.state.predict}/>
               </div>
               <Rank name={this.state.user.name} entries={this.state.user.entries} />
               <ImageLinkForm 
