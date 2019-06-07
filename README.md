@@ -1,9 +1,9 @@
 Link to the project: https://magicball-app.herokuapp.com/ 
 
-This app allows users to upload a link to a picture. All faces on the picture are detected. The app picks first 5 people on the picture and gives silly predictions to the people. It is an app that has back end with users databse using PostrgeSQL.  
+This app allows users to upload a link to a picture. All faces on the picture are detected. The app picks first 5 people on the picture and gives silly predictions to the people. It is an app that has back end with users database using PostgreSQL.  
 
 This project has 2 parts. 
-This repositiry is the front end. I deployed it on Heroku.  
+This repository is the front end. I deployed it on Heroku.  
 The server is called magicBall-API https://github.com/rushingMarina/magicBall-API . The server is deployed on Heroku as well and it has postgreSQL database that is connected to it using KNEX.js 
 
 
