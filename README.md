@@ -1,3 +1,5 @@
+Link to the project: https://magicball-app.herokuapp.com/ 
+
 This project has 2 parts. 
 
 This repositiry is the front end. I deployed it on Heroku.  
